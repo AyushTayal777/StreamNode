@@ -1,8 +1,8 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
-import { ApiError } from "../utils/ApiError.js";
+import { ApiError } from "../utils/apiError.js";
 import { User } from "../models/user.models.js";
-import { uploadOnCloudinary } from "../utils/cloudinary.js";
-import { ApiResponse } from "../utils/ApiResponse.js";
+import { uploadFile } from "../utils/cloudinary.js";
+import { ApiResponse } from "../utils/apiResponse.js";
 import jwt from "jsonwebtoken"
 import mongoose from "mongoose";
 
@@ -50,8 +50,8 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Avatar file is required");
   }
 
-  const avatar = await uploadOnCloudinary(avatarLocalPath);
-  const coverImage = await uploadOnCloudinary(coverImageLocalPath);
+  const avatar = await uploadFile(avatarLocalPath);
+  const coverImage = await uploadFile(coverImageLocalPath);
 
   if (!avatar?.url) {
     throw new ApiError(500, "Avatar upload failed");
@@ -238,7 +238,7 @@ const updateUserAvatar=asyncHandler(async(req,res)=>{
     throw new ApiError(400,"Avatar image is required")
   }
 
-  const avatar=await uploadOnCloudinary(avatarLocalPath)
+  const avatar=await uploadFile(avatarLocalPath)
   if(!avatar?.url) {
     throw new ApiError(500,"Avatar upload failed")
   }
@@ -263,7 +263,7 @@ const updateUserCoverImage=asyncHandler(async(req,res)=>{
     throw new ApiError(400,"cover image is required")
   }
 
-  const coverImage=await uploadOnCloudinary(coverImageLocalPath)
+  const coverImage=await uploadFile(coverImageLocalPath)
   if(!coverImage?.url) {
     throw new ApiError(500,"cover image upload failed")
   }
